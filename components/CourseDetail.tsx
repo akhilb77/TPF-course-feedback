@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Course, Review } from '../types';
-import { getCourseSummary, askAboutCourse } from '../services/geminiService';
+import { getCourseSummary } from '../services/geminiService';
 
 interface CourseDetailProps {
   course: Course;
@@ -11,9 +11,6 @@ interface CourseDetailProps {
 const CourseDetail: React.FC<CourseDetailProps> = ({ course, reviews, onClose }) => {
   const [summary, setSummary] = useState<string | null>(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [aiAnswer, setAiAnswer] = useState<string | null>(null);
-  const [loadingAnswer, setLoadingAnswer] = useState(false);
 
   // Helper to strip markdown symbols if the AI still sends them
   const cleanText = (text: string | null) => {
@@ -30,15 +27,6 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ course, reviews, onClose })
     };
     fetchSummary();
   }, [course, reviews]);
-
-  const handleAsk = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!question.trim()) return;
-    setLoadingAnswer(true);
-    const result = await askAboutCourse(question, course, reviews);
-    setAiAnswer(result);
-    setLoadingAnswer(false);
-  };
 
   const hasValidDept = course.department && course.department !== "General";
 
@@ -89,29 +77,6 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ course, reviews, onClose })
                 ) : (
                   <div className="text-xs leading-relaxed text-slate-300 whitespace-pre-line">
                     {cleanText(summary)}
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-6">
-                <h4 className="text-indigo-800 font-bold mb-3 flex items-center">
-                  <i className="fa-solid fa-robot mr-2"></i>
-                  Ask the Data
-                </h4>
-                <form onSubmit={handleAsk} className="space-y-2">
-                  <textarea 
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="Is the paper pattern predictable?" 
-                    className="w-full px-3 py-2 border border-indigo-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 h-20 resize-none"
-                  />
-                  <button disabled={loadingAnswer} className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 disabled:opacity-50">
-                    {loadingAnswer ? <i className="fa-solid fa-spinner animate-spin"></i> : 'Ask AI'}
-                  </button>
-                </form>
-                {aiAnswer && (
-                  <div className="mt-4 p-4 bg-white border border-indigo-100 rounded-lg text-xs text-slate-700 animate-fade-in">
-                    {cleanText(aiAnswer)}
                   </div>
                 )}
               </div>

@@ -22,10 +22,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onClick }) => {
     >
       <div className="flex justify-between items-start mb-4">
         <div>
-          <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider bg-indigo-50 px-2.5 py-1 rounded-full">
-            {course.code}
-          </span>
-          <h3 className="text-lg font-bold text-slate-800 mt-2 group-hover:text-indigo-700 transition-colors">
+          <h3 className="text-lg font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">
             {course.name}
           </h3>
         </div>
