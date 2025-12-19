@@ -1,0 +1,8 @@
+{
+  "name": "CoursePilot - Student Review Platform",
+  "description": "A comprehensive course review platform that helps students navigate academic choices through peer feedback, smart filtering, and AI-powered insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
